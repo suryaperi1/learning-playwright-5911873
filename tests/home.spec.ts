@@ -4,13 +4,21 @@ test.describe("Home page with no auth", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://practicesoftwaretesting.com/");
   });
+
+  test("Visual test", async ({ page }) => {
+     await page.waitForLoadState("networkidle");
+    await expect(page).toHaveScreenshot("home-page-no-auth.png", {
+      mask: [page.getByTitle("Practice Software Testing - Toolshop")],
+    });
+  });
+
   test("check sign in", async ({ page }) => {
     await expect(page.getByTestId("nav-sign-in")).toHaveText("Sign in");
   });
 
   test("validate page title", async ({ page }) => {
     await expect(page).toHaveTitle(
-      "Practice Software Testing - Toolshop - v5.0"
+      "Practice Software Testing - Toolshop - v5.0",
     );
   });
 
@@ -34,9 +42,14 @@ test.describe("Home page customer 01 auth", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://practicesoftwaretesting.com/");
   });
-
+  test("Visual test authorized", async ({ page }) => {
+    await page.waitForLoadState("networkidle");
+    await expect(page).toHaveScreenshot("home-page-customer01.png", {
+      mask: [page.getByTitle("Practice Software Testing - Toolshop")],
+    });
+  });
   test("check customer 01 is signed in", async ({ page }) => {
     await expect(page.getByTestId("nav-sign-in")).not.toBeVisible();
-    await expect(page.getByTestId("nav-menu")).toContainText("Jane Doe");
+    await expect(page.getByTestId("nav-menu")).toContainText("Jack Howe");
   });
 });
