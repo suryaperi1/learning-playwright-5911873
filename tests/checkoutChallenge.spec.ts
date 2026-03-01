@@ -27,8 +27,8 @@ test.describe("Home page customer 01 auth", () => {
     await page.getByTestId("proceed-1").click();
 
     //wait for the message that the user is already signed in and click on the continue button
-     await page.getByTestId("proceed-2").click();
-     
+    await page.getByTestId("proceed-2").click();
+
     //Enter billing information and click on the continue button
     await page.getByTestId("state").fill("TX");
     await page.getByTestId("postal_code").fill("12345");
@@ -49,5 +49,22 @@ test.describe("Home page customer 01 auth", () => {
     await expect(page).toHaveScreenshot("Order-confirmation.png", {
       mask: [page.getByTitle("Practice Software Testing - Toolshop")],
     });
+  });
+});
+
+test.describe("Api challenge", () => {
+  test("GET /products/search", async ({ request }) => {
+    const apiUrl = "https://api.practicesoftwaretesting.com";
+    const response = await request.get(
+      apiUrl + "/products/search?q=thor%20hammer",
+    );
+    expect(response.status()).toBe(200);
+    const body = await response.json();
+    const product_id = body.data[0].id;
+    const prod_response = await request.get(apiUrl + "/products/" + product_id);
+    expect(prod_response.status()).toBe(200);
+    const prod_body = await prod_response.json();
+    expect(prod_body.name).toBe("Thor Hammer");
+    expect(prod_body.stock).toBe(25);
   });
 });
