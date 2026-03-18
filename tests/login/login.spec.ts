@@ -10,10 +10,10 @@ test("login without page object", async ({ page }) => {
   await page.locator('[data-test="password"]').fill("welcome01");
   await page.locator('[data-test="login-submit"]').click();
   await expect(page.locator('[data-test="nav-menu"]')).toContainText(
-    "Jane Doe"
+    "Jane Doe",
   );
   await expect(page.locator('[data-test="page-title"]')).toContainText(
-    "My account"
+    "My account",
   );
 });
 
